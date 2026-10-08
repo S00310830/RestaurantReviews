@@ -1,0 +1,35 @@
+@endpoint = http://localhost:3000/api/v1/users
+
+###
+# @name postAUser
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+x-api-key: blahblah
+
+{
+    name: "test-user",
+    email: "test-user@example.com"
+}
+
+@newuser = {{postAUser.response.body._id}}
+
+###
+GET {{endpoint}}/{{newuser}} HTTP/3.0
+content-type: application/json
+x-api-key: blahblah
+
+###
+GET http://localhost:3000/api/v1/users HTTP/1.1
+content-type: application/json
+x-api-key: blahblah
+
+###
+DELETE {{endpoint}}/{{newuser}} HTTP/3.0
+content-type: application/json
+x-api-key: blahblah
+
+###
+PUT {{endpoint}}/{{newuser}} HTTP/3.0
+content-type: application/json
+x-api-key: blahblah
+

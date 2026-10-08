@@ -1,0 +1,38 @@
+@endpoint = http://localhost:3000/api/v1/reviews
+
+### 
+# @name postAReview
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+x-api-key: blahblah
+
+{
+    user: "test-user",
+    reviewText: "This is a test review."
+    date: "2024-06-01T00:00:00.000Z"
+}
+
+###
+
+@newreview = {{postAReview.response.body._id}}
+
+###
+GET {{endpoint}}/{{newreview}} HTTP/3.0
+content-type: application/json
+x-api-key: blahblah
+
+###
+GET http://localhost:3000/api/v1/reviews HTTP/1.1
+content-type: application/json
+x-api-key: blahblah
+
+
+###
+DELETE  {{endpoint}}/{{newreview}} HTTP/3.0
+content-type: application/json
+x-api-key: blahblah
+
+###
+PUT  {{endpoint}}/{{newreview}} HTTP/3.0
+content-type: application/json
+x-api-key: blahblah
