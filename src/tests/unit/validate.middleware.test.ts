@@ -14,7 +14,11 @@ describe('validate middleware', () => {
     it('passes valid review data to the route', async () => {
         const response = await request(app)
             .post('/reviews')
-            .send({ user: '123456789012345678901234', reviewText: 'This is a great Restaurant!', date: new Date('2010-01-01') });
+            .send({
+                user: '507f1f77bcf86cd799439011',
+                reviewText: 'This is a great restaurant!',
+                date: '2023-01-01T12:00:00.000Z'
+            });
 
         expect(response.status).toBe(201);
         expect(response.body).toEqual({ message: 'Review accepted' });
@@ -23,7 +27,7 @@ describe('validate middleware', () => {
     it('returns 400 with validation details for invalid review data', async () => {
         const response = await request(app)
             .post('/reviews')
-            .send({ user: 'Renault', reviewText: '', date: '', year: 1949 });
+            .send({ user: 'not-an-object-id', reviewText: '', date: 'not-a-date' });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('Validation failed');

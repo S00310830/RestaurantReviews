@@ -2,63 +2,42 @@ import { createReviewZSchema } from "../../models/reviews";
 import { describe, expect, it } from "vitest";
 
 const validReview = {
-    "user": "123456789012345678901234",
-    "reviewText": "This is a great car!",
-    "date": new Date()
+    user: "507f1f77bcf86cd799439011",
+    reviewText: "This is a great restaurant!",
+    date: "2023-01-01T12:00:00.000Z"
 }
 
-describe('Test Car Validation', () => {
-    it('should pass for the following valid data', () => {
-
-        expect(() => createReviewZSchema.parse(
-            validReview)).not.toThrow();
+describe('Review validation', () => {
+    it('accepts a MongoDB ObjectId and an ISO date string', () => {
+    const parsed = createReviewZSchema.parse(validReview);
+    expect(parsed.user).toBe(validReview.user);
+    expect(parsed.date).toEqual(new Date(validReview.date));
     });
 
-  it('should pass for the following valid data - no date', () => {
-
-        expect(() => createReviewZSchema.parse(
-            { ...validReview, "date": undefined })).not.toThrow();
+    it('accepts a review without an optional date', () => {
+    expect(() => createReviewZSchema.parse({ ...validReview, date: undefined })).not.toThrow();
     });
 
-        it('should fail for the too early year ', () => {
-
-        expect(() => createReviewZSchema.parse(
-            { ...validReview, "date": new Date('1949-01-01') })).toThrow();
+    it('rejects a UUID because the user field must be a MongoDB ObjectId', () => {
+    expect(() => createReviewZSchema.parse({
+        ...validReview,
+        user: '123e4567-e89b-12d3-a456-426614174000'
+    })).toThrow();
     });
 
-    it('should fail for the unparsaable year ', () => {
-
-        expect(() => createReviewZSchema.parse(
-            { ...validReview, "date": 'wrong date' })).toThrow();
+    it('rejects an invalid date string', () => {
+    expect(() => createReviewZSchema.parse({ ...validReview, date: 'not-a-date' })).toThrow();
     });
 
-    it('should fail for the missing make ', () => {
-
-        expect(() => createReviewZSchema.parse(
-            { ...validReview, "user": undefined })).toThrow();
+    it('rejects missing review text', () => {
+    expect(() => createReviewZSchema.parse({ ...validReview, reviewText: undefined })).toThrow();
     });
 
-    it('should fail for the missing model', () => {
-
-        expect(() => createReviewZSchema.parse(
-            { ...validReview, "reviewText": undefined })).toThrow();
+    it('rejects empty review text', () => {
+    expect(() => createReviewZSchema.parse({ ...validReview, reviewText: '  ' })).toThrow();
     });
 
-    it('should fail for the missing make ', () => {
-
-        expect(() => createReviewZSchema.parse(
-            { ...validReview, "user": '' })).toThrow();
-    });
-
-    it('should accept the earliest supported year', () => {
-
-        expect(() => createReviewZSchema.parse(
-            { ...validReview, "date": new Date('1950-01-01') })).not.toThrow();
-    });
-
-    it('should reject a year provided as a string', () => {
-
-        expect(() => createReviewZSchema.parse(
-            { ...validReview, "date": '1950-01-01' })).toThrow();
+    it('rejects review text longer than 200 characters', () => {
+    expect(() => createReviewZSchema.parse({ ...validReview, reviewText: 'x'.repeat(201) })).toThrow();
     });
 });

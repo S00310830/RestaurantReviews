@@ -13,23 +13,22 @@ import { z } from 'zod';
  *       properties:
  *         user:
  *           type: string
- *           example: 123e4567-e89b-12d3-a456-426614174000
+ *           example: 507f1f77bcf86cd799439011
  *         reviewText:
  *           type: string
  *           example: This restaurant is amazing! The food was delicious and the service was excellent.
  *         date:
  *           type: string
- *           format: date
- *           example: 2023-01-01
- *           example: 2010
+ *           format: date-time
+ *           example: 2023-01-01T12:00:00.000Z
  */
 
 
 
 export const createReviewZSchema = z.object({
-  user: z.string().uuid(),
-  reviewText: z.string().max(200).optional(),
-  date: z.date().optional()
+  user: z.string().regex(/^[a-fA-F0-9]{24}$/, 'User must be a valid MongoDB ObjectId'),
+  reviewText: z.string().trim().min(1).max(200),
+  date: z.coerce.date().optional()
 });
 
 

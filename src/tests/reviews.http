@@ -7,9 +7,9 @@ content-type: application/json
 x-api-key: blahblah
 
 {
-    user: "test-user",
-    reviewText: "This is a test review."
-    date: "2024-06-01T00:00:00.000Z"
+    "user": "507f1f77bcf86cd799439015",
+    "reviewText": "This is a test review.",
+    "date": "2024-06-01T00:00:00.000Z"
 }
 
 ###
