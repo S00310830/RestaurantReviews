@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "vitest run --config src/vite.config.ts",
+    "test": "vitest run --config src/vite.config.mts",
     "test:watch": "vitest",
     "build": "tsc",
     "start": "node build/server.js",

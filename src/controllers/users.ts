@@ -137,7 +137,7 @@ export class UsersController {
  */
     updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after', runValidators: true });
         if (!user) {
         res.status(404).json({ message: 'User not found' });
         return;
