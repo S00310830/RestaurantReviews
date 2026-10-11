@@ -3,6 +3,8 @@ import { app } from "../../app";
 import { ReviewModel } from "../../models/reviews";
 import { Types } from "mongoose";
 import { afterEach, describe, expect, it } from "vitest";
+import { UserModel } from "../../models/users";
+import { RestaurantModel } from "../../models/restaurants";
 
 describe('GET /reviews', () => {
     it('returns all reviews', async () => {
@@ -26,9 +28,22 @@ describe('Review routes', () => {
     });
 
     it('creates, retrieves, updates, and deletes a review', async () => {
-        const user = new Types.ObjectId().toString();
-        const updatedUser = new Types.ObjectId().toString();
-        const restaurant = new Types.ObjectId().toString();
+        const userRecord = await UserModel.create({
+            name: 'Integration Test User',
+            email: `review-test-${new Types.ObjectId()}@example.com`
+        });
+        const updatedUserRecord = await UserModel.create({
+            name: 'Updated Integration Test User',
+            email: `review-test-${new Types.ObjectId()}@example.com`
+        });
+        const restaurantRecord = await RestaurantModel.create({
+            restaurantName: `Review Test Restaurant ${new Types.ObjectId()}`,
+            location: '123 Test Street'
+        });
+
+        const user = userRecord._id.toString();
+        const updatedUser = updatedUserRecord._id.toString();
+        const restaurant = restaurantRecord._id.toString();
         testUsers = [user, updatedUser];
 
         const created = await request(app)
