@@ -12,6 +12,12 @@ export class RestaurantsController {
 	 *     summary: Retrieve all restaurants
 	 *     tags:
 	 *       - Restaurants
+	 *     parameters:
+	 *       - in: header
+	 *         name: x-api-key
+	 *         required: true
+	 *         schema:
+	 *           type: string
 	 *     responses:
 	 *       200:
 	 *         description: Successfully retrieved restaurants
@@ -39,6 +45,11 @@ export class RestaurantsController {
 	 *     parameters:
 	 *       - in: path
 	 *         name: id
+	 *         required: true
+	 *         schema:
+	 *           type: string
+	 *       - in: header
+	 *         name: x-api-key
 	 *         required: true
 	 *         schema:
 	 *           type: string
@@ -81,6 +92,12 @@ export class RestaurantsController {
 	 *     summary: Create a new restaurant
 	 *     tags:
 	 *       - Restaurants
+	 *     parameters:
+	 *       - in: header
+	 *         name: x-api-key
+	 *         required: true
+	 *         schema:
+	 *           type: string
 	 *     requestBody:
 	 *       required: true
 	 *       content:
@@ -114,6 +131,11 @@ export class RestaurantsController {
 	 *     parameters:
 	 *       - in: path
 	 *         name: id
+	 *         required: true
+	 *         schema:
+	 *           type: string
+	 *       - in: header
+	 *         name: x-api-key
 	 *         required: true
 	 *         schema:
 	 *           type: string
@@ -157,6 +179,11 @@ export class RestaurantsController {
 	 *     parameters:
 	 *       - in: path
 	 *         name: id
+	 *         required: true
+	 *         schema:
+	 *           type: string
+	 *       - in: header
+	 *         name: x-api-key
 	 *         required: true
 	 *         schema:
 	 *           type: string

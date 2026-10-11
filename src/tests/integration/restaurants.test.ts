@@ -14,6 +14,7 @@ describe('Restaurant routes', () => {
 	it('creates, retrieves, updates, lists, and deletes a restaurant', async () => {
 		const created = await request(app)
 			.post('/api/v1/restaurants')
+			.set('x-api-key', 'test-key')
 			.send({ restaurantName, location: '123 Test Street' });
 
 		expect(created.status).toBe(201);
@@ -25,12 +26,15 @@ describe('Restaurant routes', () => {
 
 		const id = created.body._id as string;
 
-		const retrieved = await request(app).get(`/api/v1/restaurants/${id}`);
+		const retrieved = await request(app)
+			.get(`/api/v1/restaurants/${id}`)
+			.set('x-api-key', 'test-key');
 		expect(retrieved.status).toBe(200);
 		expect(retrieved.body._id).toBe(id);
 
 		const updated = await request(app)
 			.put(`/api/v1/restaurants/${id}`)
+			.set('x-api-key', 'test-key')
 			.send({ restaurantName, location: '456 Updated Street' });
 
 		expect(updated.status).toBe(200);
@@ -39,29 +43,39 @@ describe('Restaurant routes', () => {
 			location: '456 Updated Street'
 		});
 
-		const listed = await request(app).get('/api/v1/restaurants');
+		const listed = await request(app)
+			.get('/api/v1/restaurants')
+			.set('x-api-key', 'test-key');
 		expect(listed.status).toBe(200);
 		expect(listed.body).toEqual(expect.arrayContaining([
 			expect.objectContaining({ _id: id })
 		]));
 
-		const deleted = await request(app).delete(`/api/v1/restaurants/${id}`);
+		const deleted = await request(app)
+			.delete(`/api/v1/restaurants/${id}`)
+			.set('x-api-key', 'test-key');
 		expect(deleted.status).toBe(200);
 		expect(deleted.body).toEqual({ message: 'Restaurant deleted successfully' });
 
-		const afterDelete = await request(app).get(`/api/v1/restaurants/${id}`);
+		const afterDelete = await request(app)
+			.get(`/api/v1/restaurants/${id}`)
+			.set('x-api-key', 'test-key');
 		expect(afterDelete.status).toBe(404);
 	});
 
     it('returns 404 for non-existent restaurant', async () => {
         const nonExistentId = new Types.ObjectId().toString();
-        const response = await request(app).get(`/api/v1/restaurants/${nonExistentId}`);
+        const response = await request(app)
+            .get(`/api/v1/restaurants/${nonExistentId}`)
+            .set('x-api-key', 'test-key');
         expect(response.status).toBe(404);
         expect(response.body).toEqual({ message: 'Restaurant not found' });
     });
 
     it('returns 400 for invalid restaurant ID', async () => {
-        const response = await request(app).get('/api/v1/restaurants/invalid-id');
+        const response = await request(app)
+            .get('/api/v1/restaurants/invalid-id')
+            .set('x-api-key', 'test-key');
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('Invalid restaurant ID');
     });
@@ -69,6 +83,7 @@ describe('Restaurant routes', () => {
     it('returns 400 for invalid restaurant data when creating', async () => {
         const response = await request(app)
             .post('/api/v1/restaurants')
+            .set('x-api-key', 'test-key')
             .send({ restaurantName: '', location: '' });
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('Validation failed');

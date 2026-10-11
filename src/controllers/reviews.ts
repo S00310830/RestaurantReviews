@@ -11,6 +11,12 @@ export class ReviewsController {
 	 *     summary: Retrieve all reviews
 	 *     tags:
 	 *       - Reviews
+	 *     parameters:
+	 *       - in: header
+	 *         name: x-api-key
+	 *         required: true
+	 *         schema:
+	 *           type: string
 	 *     responses:
 	 *       200:
 	 *         description: Successfully retrieved reviews
@@ -38,6 +44,11 @@ export class ReviewsController {
 	 *     parameters:
 	 *       - in: path
 	 *         name: id
+	 *         required: true
+	 *         schema:
+	 *           type: string
+	 *       - in: header
+	 *         name: x-api-key
 	 *         required: true
 	 *         schema:
 	 *           type: string
@@ -72,6 +83,12 @@ export class ReviewsController {
 	 *     summary: Create a new review
 	 *     tags:
 	 *       - Reviews
+	 *     parameters:
+	 *       - in: header
+	 *         name: x-api-key
+	 *         required: true
+	 *         schema:
+	 *           type: string
 	 *     requestBody:
 	 *       required: true
 	 *       content:
@@ -105,6 +122,11 @@ export class ReviewsController {
 	 *     parameters:
 	 *       - in: path
 	 *         name: id
+	 *         required: true
+	 *         schema:
+	 *           type: string
+	 *       - in: header
+	 *         name: x-api-key
 	 *         required: true
 	 *         schema:
 	 *           type: string
@@ -148,6 +170,11 @@ export class ReviewsController {
 	 *     parameters:
 	 *       - in: path
 	 *         name: id
+	 *         required: true
+	 *         schema:
+	 *           type: string
+	 *       - in: header
+	 *         name: x-api-key
 	 *         required: true
 	 *         schema:
 	 *           type: string

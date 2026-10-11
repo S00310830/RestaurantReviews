@@ -42,4 +42,12 @@ const restaurantSchema = new Schema<IRestaurant>(
     }
 );
 
+// This section ensures the combination of restaurantName and location is unique, ignoring case sensitivity
+restaurantSchema.index(
+    { restaurantName: 1, location: 1 },
+    { unique: true,
+      collation: { locale: 'en', strength: 2 }
+    }
+);
+
 export const RestaurantModel = model<IRestaurant>('Restaurant', restaurantSchema);

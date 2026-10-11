@@ -14,6 +14,7 @@ describe('User routes', () => {
     it('creates, retrieves, updates, and deletes a user', async () => {
         const created = await request(app)
             .post('/api/v1/users')
+            .set('x-api-key', 'test-key')
             .send({ name: 'Integration Test User', email });
 
         expect(created.status).toBe(201);
@@ -24,7 +25,9 @@ describe('User routes', () => {
         expect(created.body._id).toEqual(expect.any(String));
 
         const id = created.body._id as string;
-        const retrieved = await request(app).get(`/api/v1/users/${id}`);
+        const retrieved = await request(app)
+            .get(`/api/v1/users/${id}`)
+            .set('x-api-key', 'test-key');
 
         expect(retrieved.status).toBe(200);
         expect(retrieved.body._id).toBe(id);
@@ -35,6 +38,7 @@ describe('User routes', () => {
 
         const updated = await request(app)
             .put(`/api/v1/users/${id}`)
+            .set('x-api-key', 'test-key')
             .send({ name: 'Updated Integration User', email });
 
         expect(updated.status).toBe(200);
@@ -43,18 +47,24 @@ describe('User routes', () => {
             email,
         });
 
-        const deleted = await request(app).delete(`/api/v1/users/${id}`);
+        const deleted = await request(app)
+            .delete(`/api/v1/users/${id}`)
+            .set('x-api-key', 'test-key');
 
         expect(deleted.status).toBe(200);
         expect(deleted.body).toEqual({ message: 'User deleted successfully' });
 
-        const afterDelete = await request(app).get(`/api/v1/users/${id}`);
+        const afterDelete = await request(app)
+            .get(`/api/v1/users/${id}`)
+            .set('x-api-key', 'test-key');
         expect(afterDelete.status).toBe(404);
     });
 
     it('returns 404 for non-existent user', async () => {
         const nonExistentId = new Types.ObjectId().toString();
-        const response = await request(app).get(`/api/v1/users/${nonExistentId}`);
+        const response = await request(app)
+            .get(`/api/v1/users/${nonExistentId}`)
+            .set('x-api-key', 'test-key');
         expect(response.status).toBe(404);
         expect(response.body).toEqual({ message: 'User not found' });
     });
@@ -62,13 +72,16 @@ describe('User routes', () => {
     it('returns 400 for invalid user data', async () => {
         const response = await request(app)
             .post('/api/v1/users')
+            .set('x-api-key', 'test-key')
             .send({ name: '', email: 'invalid-email' });
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('Error creating user');
     });
 
     it('returns 400 for invalid user ID', async () => {
-        const response = await request(app).get('/api/v1/users/invalid-id');
+        const response = await request(app)
+            .get('/api/v1/users/invalid-id')
+            .set('x-api-key', 'test-key');
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('Error fetching user');
     });

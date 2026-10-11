@@ -9,6 +9,12 @@ export class UsersController {
  *     summary: Retrieve all users
  *     tags:
  *       - Users
+ *     parameters:
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Successfully retrieved users
@@ -34,6 +40,11 @@ export class UsersController {
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: header
+ *         name: x-api-key
  *         required: true
  *         schema:
  *           type: string
@@ -65,6 +76,12 @@ export class UsersController {
  *     summary: Create a new user
  *     tags:
  *       - Users
+ *     parameters:
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -96,6 +113,11 @@ export class UsersController {
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: header
+ *         name: x-api-key
  *         required: true
  *         schema:
  *           type: string
@@ -136,6 +158,11 @@ export class UsersController {
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: header
+ *         name: x-api-key
  *         required: true
  *         schema:
  *           type: string
