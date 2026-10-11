@@ -45,6 +45,8 @@ export class RestaurantsController {
 	 *     responses:
 	 *       200:
 	 *         description: Restaurant found
+	 *       400:
+	 *         description: Invalid restaurant ID
 	 *       404:
 	 *         description: Restaurant not found
 	 *       500:

@@ -20,8 +20,8 @@ import { z } from 'zod';
  */
 
 export const createRestaurantZSchema = z.object({
-  restaurantName: z.string().trim().min(1).max(100).describe("Restaurant name cannot be empty"),
-  location: z.string().trim().min(1).max(200).describe("Location cannot be empty")
+  restaurantName: z.string().trim().min(1).max(100),
+  location: z.string().trim().min(1).max(200)
 });
 
 export interface IRestaurant {
