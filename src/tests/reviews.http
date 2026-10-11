@@ -8,6 +8,7 @@ x-api-key: blahblah
 
 {
     "user": "507f1f77bcf86cd799439015",
+    "restaurant": "507f1f77bcf86cd799439012",
     "reviewText": "This is a test review.",
     "date": "2024-06-01T00:00:00.000Z"
 }
@@ -36,3 +37,10 @@ x-api-key: blahblah
 PUT  {{endpoint}}/{{newreview}} HTTP/3.0
 content-type: application/json
 x-api-key: blahblah
+
+{
+  "user": "507f1f77bcf86cd799439015",
+  "restaurant": "507f1f77bcf86cd799439013",
+  "reviewText": "Updated review text.",
+  "date": "2024-06-02T00:00:00.000Z"
+}

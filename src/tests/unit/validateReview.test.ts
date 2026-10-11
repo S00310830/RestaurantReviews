@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 
 const validReview = {
     user: "507f1f77bcf86cd799439011",
+    restaurant: "507f1f77bcf86cd799439012",
     reviewText: "This is a great restaurant!",
     date: "2023-01-01T12:00:00.000Z"
 }

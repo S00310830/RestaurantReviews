@@ -5,23 +5,24 @@ import { z } from 'zod';
  * @openapi
  * components:
  *   schemas:
- *    CreateUserInput:
- *      type: object
- *     required:
- *       - name
- *       - email
- *    properties:
- *      name:
- *        type: string
- *        example: John Doe
- *      email:
- *        type: string
- *        example: john.doe@example.com
+ *     CreateUserInput:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *       properties:
+ *         name:
+ *           type: string
+ *           example: John Doe
+ *         email:
+ *           type: string
+ *           format: email
+ *           example: john.doe@example.com
  */
 
 export const createUserZSchema = z.object({
-  name: z.string().max(100),
-  email: z.string()
+  name: z.string().trim(),
+  email: z.string().trim()
 });
 
 export interface IUser {

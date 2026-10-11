@@ -1,0 +1,35 @@
+@endpoint = http://localhost:3000/api/v1/restaurants
+
+###
+# @name postARestaurant
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+
+{
+    "restaurantName": "Integration Test Restaurant",
+    "location": "123 Test Street"
+}
+
+###
+@newrestaurant = {{postARestaurant.response.body._id}}
+
+###
+GET {{endpoint}}/{{newrestaurant}} HTTP/1.1
+content-type: application/json
+
+###
+GET {{endpoint}} HTTP/1.1
+content-type: application/json
+
+###
+PUT {{endpoint}}/{{newrestaurant}} HTTP/1.1
+content-type: application/json
+
+{
+    "restaurantName": "Updated Integration Test Restaurant",
+    "location": "456 Updated Street"
+}
+
+###
+DELETE {{endpoint}}/{{newrestaurant}} HTTP/1.1
+content-type: application/json

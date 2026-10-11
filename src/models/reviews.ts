@@ -9,11 +9,15 @@ import { z } from 'zod';
  *       type: object
  *       required:
  *         - user
+ *         - restaurant
  *         - reviewText
  *       properties:
  *         user:
  *           type: string
  *           example: 507f1f77bcf86cd799439011
+ *         restaurant:
+ *           type: string
+ *           example: 507f1f77bcf86cd799439012
  *         reviewText:
  *           type: string
  *           example: This restaurant is amazing! The food was delicious and the service was excellent.
@@ -27,6 +31,7 @@ import { z } from 'zod';
 
 export const createReviewZSchema = z.object({
   user: z.string().regex(/^[a-fA-F0-9]{24}$/, 'User must be a valid MongoDB ObjectId'),
+  restaurant: z.string().regex(/^[a-fA-F0-9]{24}$/, 'Restaurant must be a valid MongoDB ObjectId'),
   reviewText: z.string().trim().min(1).max(200),
   date: z.coerce.date().optional()
 });
@@ -34,15 +39,21 @@ export const createReviewZSchema = z.object({
 
 export interface IReview {
   user : Schema.Types.ObjectId;
-  reviewText?: string;
+  restaurant: Schema.Types.ObjectId;
+  reviewText: string;
   date?: Date;
 }
 
 const reviewSchema = new Schema<IReview>(
  {
-    user:{
+    user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        required: true,
+    },
+    restaurant: {
+        type: Schema.Types.ObjectId,
+        ref: 'Restaurant',
         required: true,
     },
     reviewText: {
