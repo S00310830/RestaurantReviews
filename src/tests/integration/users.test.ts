@@ -3,6 +3,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { Types } from 'mongoose';
 import { app } from '../../app';
 import { UserModel } from '../../models/users';
+import { RestaurantModel } from '../../models/restaurants';
+import { ReviewModel } from '../../models/reviews';
 
 describe('User routes', () => {
     const email = `integration-${new Types.ObjectId().toString()}@example.com`;
@@ -84,5 +86,34 @@ describe('User routes', () => {
             .set('x-api-key', 'test-key');
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('Error fetching user');
+    });
+    
+    it('deletes all reviews when its user is deleted', async () => {
+
+        const user = await UserModel.create({
+            name: 'Cascade Delete Test User',
+            email: `cascade-restaurant-${new Types.ObjectId()}@example.com`
+        });
+
+        const restaurant = await RestaurantModel.create({
+            restaurantName: `Cascade Delete Restaurant ${new Types.ObjectId()}`,
+            location: 'Cascade Test Location'
+        });
+
+        const review = await ReviewModel.create({
+            user: user._id,
+            restaurant: restaurant._id,
+            reviewText: 'This review should be deleted with the restaurant'
+        });
+
+        const userId = user._id.toString();
+        const deleted = await request(app)
+            .delete(`/api/v1/users/${userId}`)
+            .set('x-api-key', 'test-key');
+
+        expect(deleted.status).toBe(200);
+        expect(await ReviewModel.findById(review._id)).toBeNull();
+
+        await UserModel.deleteOne({ _id: user._id });
     });
 });

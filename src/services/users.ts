@@ -1,3 +1,4 @@
+import { ReviewModel } from '../models/reviews';
 import { UserModel, IUser } from '../models/users';
 import { HydratedDocument } from 'mongoose';
 
@@ -21,7 +22,11 @@ export class UserService {
  }
 
  async deleteUser(id: string): Promise<IUser | null> {
- return await UserModel.findByIdAndDelete(id).lean();
+ const deletedUser = await UserModel.findByIdAndDelete(id).lean();
+ if(deletedUser) {
+    await ReviewModel.deleteMany({ user: deletedUser._id });
+ }
+ return deletedUser;
  }
 
 }
