@@ -6,11 +6,17 @@ import { RestaurantModel } from '../models/restaurants';
 export class ReviewService {
   
  async getAllReviews(): Promise<IReview[]> {
-    return await ReviewModel.find().lean(); 
+    return await ReviewModel.find()
+      .populate('user', 'name')
+      .populate('restaurant', 'restaurantName')
+      .lean(); 
  }
 
  async getReviewById(id: string): Promise<IReview | null> {
-    return await ReviewModel.findById(id).lean();
+    return await ReviewModel.findById(id)
+      .populate('user', 'name')
+      .populate('restaurant', 'restaurantName')
+      .lean();
  }
 
  async createReview(reviewData: IReview): Promise<HydratedDocument<IReview>> {
