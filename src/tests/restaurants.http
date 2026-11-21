@@ -4,9 +4,10 @@
 # @name postARestaurant
 POST {{endpoint}} HTTP/1.1
 content-type: application/json
+x-api-key: 123
 
 {
-    "restaurantName": "Integration Test Restaurant",
+    "restaurantName": "THE GREATEST TEST EVER",
     "location": "123 Test Street"
 }
 
@@ -16,14 +17,17 @@ content-type: application/json
 ###
 GET {{endpoint}}/{{newrestaurant}} HTTP/1.1
 content-type: application/json
+x-api-key: 123
 
 ###
 GET {{endpoint}} HTTP/1.1
 content-type: application/json
+x-api-key: 123
 
 ###
 PUT {{endpoint}}/{{newrestaurant}} HTTP/1.1
 content-type: application/json
+x-api-key: 123
 
 {
     "restaurantName": "Updated Integration Test Restaurant",

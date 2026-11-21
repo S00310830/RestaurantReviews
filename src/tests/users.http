@@ -11,6 +11,7 @@ x-api-key: blahblah
     "email": "test-user@example.com"
 }
 
+###
 @newuser = {{postAUser.response.body._id}}
 
 ###
