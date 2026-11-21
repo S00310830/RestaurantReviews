@@ -8,6 +8,7 @@ import restaurantRoutes from './routes/restaurants';
 import cors from 'cors';
 
 
+
 export const app: Application = express();
 
 app.use(cors());

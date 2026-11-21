@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 import { z } from 'zod';
 
 /**
@@ -38,8 +38,8 @@ export const createReviewZSchema = z.object({
 
 
 export interface IReview {
-  user : Schema.Types.ObjectId;
-  restaurant: Schema.Types.ObjectId;
+  user : Types.ObjectId;
+  restaurant: Types.ObjectId;
   reviewText: string;
   date?: Date;
 }

@@ -1,5 +1,6 @@
 import { RestaurantModel, IRestaurant } from '../models/restaurants';
 import { HydratedDocument } from 'mongoose';
+import { ReviewModel } from '../models/reviews';
 
 export class RestaurantService {
   
@@ -21,7 +22,11 @@ export class RestaurantService {
  }
 
  async deleteRestaurant(id: string): Promise<IRestaurant | null> {
- return await RestaurantModel.findByIdAndDelete(id).lean();
+ const deletedRestaurant = await RestaurantModel.findByIdAndDelete(id).lean();
+ if(deletedRestaurant) {
+    await ReviewModel.deleteMany({ restaurant: deletedRestaurant._id });
+ }
+ return deletedRestaurant;
  }
 
 }
