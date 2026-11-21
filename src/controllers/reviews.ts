@@ -135,7 +135,7 @@ export class ReviewsController {
 	 *       content:
 	 *         application/json:
 	 *           schema:
-	 *             $ref: '#/components/schemas/CreateReviewInput'
+	 *             $ref: '#/components/schemas/UpdateReviewInput'
 	 *     responses:
 	 *       200:
 	 *         description: Review updated successfully

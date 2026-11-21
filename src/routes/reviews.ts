@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { ReviewsController } from '../controllers/reviews';
 import {validate} from '../middleware/validate.middleware';
-import {createReviewZSchema}  from '../models/reviews';
+import { createReviewZSchema, updateReviewZSchema } from '../models/reviews';
 
 
 const router = Router();
@@ -11,7 +11,7 @@ router.get('/', reviewsController.getReviews);
 
 router.get('/:id', reviewsController.getReviewById);
 router.post('/', validate(createReviewZSchema), reviewsController.createReview);
-router.put('/:id', validate(createReviewZSchema), reviewsController.updateReview);
+router.put('/:id', validate(updateReviewZSchema), reviewsController.updateReview);
 router.delete('/:id', reviewsController.deleteReview);
 
 export default router;

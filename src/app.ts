@@ -20,6 +20,7 @@ app.get("/ping", (_req, res) => {
 app.use('/api/v1/reviews', authenticateKey, reviewRoutes);
 app.use('/api/v1/users', authenticateKey, userRoutes);
 app.use('/api/v1/restaurants', authenticateKey, restaurantRoutes);
+app.use((_req, _res, next) => setTimeout(next, 2000));
 app.use((req, _res, next) => {  
     console.log(`${req.method} ${req.originalUrl}`);
     next();

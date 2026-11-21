@@ -33,19 +33,14 @@ describe('Review routes', () => {
             name: 'Integration Test User',
             email: `review-test-${new Types.ObjectId()}@example.com`
         });
-        const updatedUserRecord = await UserModel.create({
-            name: 'Updated Integration Test User',
-            email: `review-test-${new Types.ObjectId()}@example.com`
-        });
         const restaurantRecord = await RestaurantModel.create({
             restaurantName: `Review Test Restaurant ${new Types.ObjectId()}`,
             location: '123 Test Street'
         });
 
         const user = userRecord._id.toString();
-        const updatedUser = updatedUserRecord._id.toString();
         const restaurant = restaurantRecord._id.toString();
-        testUsers = [user, updatedUser];
+        testUsers = [user];
 
         const created = await request(app)
             .post('/api/v1/reviews')
@@ -68,18 +63,20 @@ describe('Review routes', () => {
 
         expect(retrieved.status).toBe(200);
         expect(retrieved.body._id).toBe(id);
+        expect(retrieved.body.userId).toBe(user);
+        expect(retrieved.body.restaurantId).toBe(restaurant);
 
         const updated = await request(app)
             .put(`/api/v1/reviews/${id}`)
             .set('x-api-key', 'test-key')
-            .send({ user: updatedUser, restaurant, reviewText: 'Updated Test Review', date: new Date() });
+            .send({ reviewText: 'Updated Test Review' });
 
         expect(updated.status).toBe(200);
         expect(updated.body).toMatchObject({
-            user: updatedUser,
+            user,
             restaurant,
             reviewText: 'Updated Test Review',
-            date: expect.any(String),
+            date: created.body.date,
         });
 
         const deleted = await request(app)
@@ -107,12 +104,11 @@ describe('Review routes', () => {
 
     it('returns 400 for an invalid review when updating', async () => {
         const user = new Types.ObjectId().toString();
-        const restaurant = new Types.ObjectId().toString();
 
         const response = await request(app)
             .put(`/api/v1/reviews/${user}`)
             .set('x-api-key', 'test-key')
-            .send({ user: 'Invalid Test User', restaurant, reviewText: '', date: '' });
+            .send({ reviewText: '' });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('Validation failed');
@@ -127,12 +123,7 @@ describe('Review routes', () => {
         const updateResponse = await request(app)
             .put(`/api/v1/reviews/${missingId}`)
             .set('x-api-key', 'test-key')
-            .send({
-                user: new Types.ObjectId().toString(),
-                restaurant: new Types.ObjectId().toString(),
-                reviewText: 'Missing Review',
-                date: new Date()
-            });
+            .send({ reviewText: 'Missing Review' });
         const deleteResponse = await request(app)
             .delete(`/api/v1/reviews/${missingId}`)
             .set('x-api-key', 'test-key');

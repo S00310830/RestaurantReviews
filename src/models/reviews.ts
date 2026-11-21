@@ -25,6 +25,16 @@ import { z } from 'zod';
  *           type: string
  *           format: date-time
  *           example: 2023-01-01T12:00:00.000Z
+ *     UpdateReviewInput:
+ *       type: object
+ *       required:
+ *         - reviewText
+ *       additionalProperties: false
+ *       properties:
+ *         reviewText:
+ *           type: string
+ *           maxLength: 200
+ *           example: Updated review text.
  */
 
 
@@ -36,12 +46,24 @@ export const createReviewZSchema = z.object({
   date: z.coerce.date().optional()
 });
 
+export const updateReviewZSchema = z.object({
+  reviewText: z.string().trim().min(1).max(200)
+}).strict();
+
 
 export interface IReview {
   user : Types.ObjectId;
   restaurant: Types.ObjectId;
   reviewText: string;
   date?: Date;
+}
+
+export interface IReviewDetails extends Omit<IReview, 'user' | 'restaurant'> {
+  _id: Types.ObjectId;
+  user: { _id: Types.ObjectId; name: string } | null;
+  restaurant: { _id: Types.ObjectId; restaurantName: string } | null;
+  userId: string | null;
+  restaurantId: string | null;
 }
 
 const reviewSchema = new Schema<IReview>(
