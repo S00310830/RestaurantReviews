@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 import { UserModel } from '../models/users';
+import { UserService } from '../services/users';
+
+const usersService = new UserService();
 
 export class UsersController {
 /**
@@ -175,15 +178,19 @@ export class UsersController {
  *         description: Error deleting user
  */
     deleteUser = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const user = await UserModel.findByIdAndDelete(req.params.id);
-        if (!user) {
-        res.status(404).json({ message: 'User not found' });
-        return;
+        try {
+            const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+            const user = await usersService.getUserById(id);
+
+            if (!user) {
+                res.status(404).json({ message: 'User not found' });
+                return;
+            }
+
+            await usersService.deleteUser(id);
+            res.status(200).json({ message: 'User deleted successfully' });
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching user', error });
         }
-        res.status(200).json({ message: 'User deleted successfully' });
-    } catch (error) {
-        res.status(400).json({ message: 'Error deleting user', error });
-    }
     };
 }
