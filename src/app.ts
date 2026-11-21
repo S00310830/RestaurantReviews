@@ -5,9 +5,16 @@ import swaggerUi from 'swagger-ui-express';
 import reviewRoutes from './routes/reviews';
 import userRoutes from './routes/users';
 import restaurantRoutes from './routes/restaurants';
+import cors from 'cors';
+
 
 
 export const app: Application = express();
+
+app.use(cors({
+  origin: 'http://localhost:4200',
+  allowedHeaders: ['Content-Type', 'x-api-key']
+}));
 
 app.use(express.json());
 app.get("/ping", (_req, res) => {
